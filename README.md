@@ -8,3 +8,4 @@ El código está implementado bajo una srquitectura funcional.
 Integrantes:
 
 Giancarlo Marín Hernández
+Manuel Alejo Gago
