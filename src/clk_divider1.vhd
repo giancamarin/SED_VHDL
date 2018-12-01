@@ -5,10 +5,10 @@ entity clkdivider1 is
     Port (
         Clk: in  STD_LOGIC;
         Reset  : in  STD_LOGIC;
-        Clk_out : out STD_LOGIC
+        Clk_out1 : out STD_LOGIC
     );
 end clkdivider1;
- 
+ —-hola
 architecture Behavioral of clkdivider1 is
     signal temporal: STD_LOGIC;
     signal contador: integer range 0 to 49999999 := 0;
@@ -27,5 +27,5 @@ begin
         end if;
     end process;
      
-    Clk_out <= temporal;
+    Clk_out1 <= temporal;
 end Behavioral;

@@ -1,31 +1,47 @@
-﻿library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
- 
-entity clkdivider1 is
-    Port (
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
+ENTITY clkdivider1_tb IS
+END clkdivider1_tb;
+ 
+ARCHITECTURE behavior OF clkdivider1_tb IS
+    COMPONENT clkdivider1
+    Port (
         Clk: in  STD_LOGIC;
         Reset  : in  STD_LOGIC;
-        Clk_out : out STD_LOGIC
+        Clk_out1 : out STD_LOGIC
     );
-end clkdivider1;
- 
-architecture Behavioral of clkdivider1 is
-    signal temporal: STD_LOGIC;
-    signal contador: integer range 0 to 49999999 := 0;
-begin
-    divisor_frecuencia: process (Clk, Reset) begin
-        if (Reset = '1') then
-            temporal <= '0';
-            contador <= 0;
-        elsif rising_edge(Clk) then
-            if (contador = 49999999) then
-                temporal <= NOT(temporal);
-                contador <= 0;
-            else
-                contador <= contador+1;
-            end if;
-        end if;
-    end process;
-     
-    Clk_out <= temporal;
-end Behavioral;
+    END COMPONENT;
+ 
+    -- Entradas
+    signal Clk : std_logic := '0';
+    signal Reset   : std_logic := '0';
+    -- Salidas
+    signal Clk_out1  : std_logic;
+    constant entrada_t : time := 20 ns; 
+BEGIN
+    -- Instancia de la unidad bajo prueba.
+    uut: clkdivider1 PORT MAP (
+        Clk => Clk,
+        Reset   => Reset,
+        Clk_out1  => Clk_out1
+    );
+ 
+    -- Definición del reloj.
+    entrada_process :process
+        begin
+        Clk <= '0';
+        wait for entrada_t / 2;
+        Clk <= '1';
+        wait for entrada_t / 2;
+    end process;
+ 
+   
+    estimulos: process
+    begin
+        Reset <= '1'; -- Condiciones iniciales.
+        wait for 100 ns;
+        Reset <= '0'; 
+        wait;
+    end process;
+END;
