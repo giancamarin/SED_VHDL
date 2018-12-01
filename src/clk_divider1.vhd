@@ -5,7 +5,7 @@ entity clkdivider1 is
     Port (
         Clk: in  STD_LOGIC;
         Reset  : in  STD_LOGIC;
-        Clk_out : out STD_LOGIC
+        Clk_out1 : out STD_LOGIC
     );
 end clkdivider1;
  
@@ -27,5 +27,5 @@ begin
         end if;
     end process;
      
-    Clk_out <= temporal;
+    Clk_out1 <= temporal;
 end Behavioral;
