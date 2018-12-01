@@ -22,26 +22,26 @@ ARCHITECTURE behavior OF clkdivider1_tb IS
 BEGIN
     -- Instancia de la unidad bajo prueba.
     uut: clkdivider1 PORT MAP (
-        entrada => Clk,
-        reset   => reset,
-        salida  => Clk_out1
+        Clk => Clk,
+        Reset   => Reset,
+        Clk_out1  => Clk_out1
     );
  
     -- Definición del reloj.
     entrada_process :process
         begin
-        entrada <= '0';
+        Clk <= '0';
         wait for entrada_t / 2;
-        entrada <= '1';
+        Clk <= '1';
         wait for entrada_t / 2;
     end process;
  
    
     estimulos: process
     begin
-        reset <= '1'; -- Condiciones iniciales.
+        Reset <= '1'; -- Condiciones iniciales.
         wait for 100 ns;
-        reset <= '0'; 
+        Reset <= '0'; 
         wait;
     end process;
 END;
