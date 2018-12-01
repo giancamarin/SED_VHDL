@@ -4,7 +4,7 @@ El siguiente es el repositorio del proyecto de un contador bidireccional en VHDL
 El proyecto es parte de la asignatura de Sistemas Electrónicos Digitales de la ETSIDI de la Universidad Politécnica 
 de Madrid.
 
-El código está implementado bajo una arquitectura uncional.
+El código está implementado bajo una arquitectura funcional.
 
 Integrantes:
 
