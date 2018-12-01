@@ -8,7 +8,7 @@ entity clkdivider1 is
         Clk_out1 : out STD_LOGIC
     );
 end clkdivider1;
- 
+ —-hola
 architecture Behavioral of clkdivider1 is
     signal temporal: STD_LOGIC;
     signal contador: integer range 0 to 49999999 := 0;
