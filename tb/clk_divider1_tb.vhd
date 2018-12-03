@@ -7,10 +7,10 @@ END clkdivider1_tb;
 ARCHITECTURE behavior OF clkdivider1_tb IS
     COMPONENT clkdivider1
     Port (
-        Clk: in  STD_LOGIC;
-        Reset  : in  STD_LOGIC;
-        Clk_out1 : out STD_LOGIC
-    );
+        Clk: in  STD_LOGIC;
+        Reset  : in  STD_LOGIC;
+        Clk_out1 : out STD_LOGIC
+    );
     END COMPONENT;
  
     -- Entradas
@@ -27,7 +27,7 @@ BEGIN
         Clk_out1  => Clk_out1
     );
  
-    -- Definición del reloj.
+    -- Definici�n del reloj.
     entrada_process :process
         begin
         Clk <= '0';

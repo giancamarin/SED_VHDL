@@ -27,7 +27,7 @@ BEGIN
         Clk_out1000  => Clk_out1000
     );
  
-    -- DefiniciÃ³n del reloj.
+    -- Definición del reloj.
     entrada_process :process
         begin
         Clk <= '0';
@@ -36,7 +36,7 @@ BEGIN
         wait for entrada_t / 2;
     end process;
  
-    -- Procesamiento de estÃ­mulos.
+    -- Procesamiento de estímulos.
     estimulos: process
     begin
         Reset <= '1'; -- Condiciones iniciales.
