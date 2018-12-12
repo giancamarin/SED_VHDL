@@ -39,33 +39,59 @@ component PulsadorAntiRebotes
 port(
         clk	: in std_logic;
         boton_in    : in std_logic;
-        boton_out    : out std_logic);
+        boton_out    : out std_logic;
+        counter : out std_logic_vector(3 downto 0));
 end component;    
 
 signal clk : std_logic:='0';
 signal boton_in: std_logic:='0';
 signal boton_out:std_logic;
-constant clk_time: time:= 100 ms;
+signal counter : std_logic_vector(3 downto 0);
+constant clk_time: time:= 1 ms;
 
 begin
 uut: PulsadorAntiRebotes
     port map(
         clk=> clk,
         boton_in=> boton_in,
-        boton_out=> boton_out
+        boton_out=> boton_out,
+        counter=>counter
         );
-    clk_process :process
-        begin
-            clk <= '0';
-            wait for clk_time;
-            clk<= '1';
-            wait for clk_time;
-    end process;
+        
+    clk<= not clk after clk_time;
    stimulate: process 
         begin
-            wait for clk_time;
-            boton_in<='0';
-            wait for clk_time;
-            boton_in<='1';
+          wait for 10  ms;
+          wait for clk_time*10;
+          boton_in <= '0';
+          wait for 1 ms; 
+          boton_in <= '1';
+          wait for 2 ms; 
+          boton_in <= '0';
+          wait for 1 ms; 
+          boton_in <= '1';
+          wait for 3 ms; 
+          boton_in <= '0';
+          wait for 1 ms; 
+          boton_in <= '1';
+          wait for 4 ms; 
+          boton_in <= '0';
+          wait for 1 ms; 
+          boton_in <= '1';
+          wait for 3 ms;  
+          boton_in <= '0';
+          wait for 1 ms; 
+          boton_in <= '1';
+          wait for 40 ms;  
+          boton_in <= '0';
+          wait for 1 ms; 
+          boton_in <= '1';
+          wait for 2 ms; 
+          boton_in <= '0';
+          wait for 1 ms; 
+          boton_in <= '1';
+          wait for 3 ms; 
+          boton_in <= '0';
+              wait;
     end process; 
 end Behavioral;
