@@ -39,26 +39,31 @@ entity PulsadorAntiRebotes is
     port (
         clk	: in std_logic;
 	boton_in	: in std_logic;
-	boton_out	: out std_logic);
+	boton_out	: out std_logic;
+	counter : out std_logic_vector(3 downto 0)
+	);
+	
 end PulsadorAntiRebotes;
 
 architecture behavioral of PulsadorAntiRebotes is
-    constant CNT_SIZE : integer := 19;
+    constant CNT_SIZE : integer := 3;
     signal boton_prev   : std_logic := '0';
-    signal counter    : std_logic_vector(CNT_SIZE downto 0) := (others => '0');
+    signal counter_i    : std_logic_vector(CNT_SIZE downto 0) := (others => '0');
 
 begin
     process(clk)
     begin
 	if (clk'event and clk='1') then
 		if (boton_prev xor boton_in) = '1' then
-			counter <= (others => '0');
+			counter_i <= (others => '0');
 			boton_prev <= boton_in;
-		elsif (counter(CNT_SIZE) = '0') then
-			counter <= counter + 1;
+		elsif (counter_i < "1010") then
+			counter_i <= counter_i + 1;
         else
 			boton_out <= boton_prev;
 		end if;
 	end if;
+	
     end process;
+    counter<=counter_i;
 end behavioral;
