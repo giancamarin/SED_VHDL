@@ -15,7 +15,7 @@ architecture Behavioral of just_counter is
   
   
 --components:
-    component clkdivider1 
+    component clk_divider1 
     Port (
         Clk: in  STD_LOGIC;
         Reset  : in  STD_LOGIC;
@@ -23,7 +23,7 @@ architecture Behavioral of just_counter is
         );
     end component;
     
-    component clkdivider1000 
+    component clk_divider1000 
         Port (
             Clk: in  STD_LOGIC;
             Reset  : in  STD_LOGIC;
@@ -54,7 +54,7 @@ architecture Behavioral of just_counter is
         Port ( 
                clk: in std_logic;
                reset: in std_logic;
-               eneable: in std_logic;
+               enable: in std_logic;
                count: out std_logic_vector(width-1 downto 0);
                salida: out std_logic  
         );
@@ -77,12 +77,12 @@ architecture Behavioral of just_counter is
     begin
     
     
-    clk1: clkdivider1000 port map(
+    clk1: clk_divider1000 port map(
                 Clk => Clk,
                 Reset  => reset,
                 Clk_out1000 => reloj1
             );
-    clk2: clkdivider1 port map(
+    clk2: clk_divider1 port map(
                             Clk => clk,
                             Reset  => reset,
                             Clk_out1 => reloj2
@@ -91,7 +91,7 @@ architecture Behavioral of just_counter is
     countunid: bin_counter port map(
         clk => reloj2,
         reset=>reset,
-        eneable=>start,
+        enable=>start,
         count=>unid,
         salida=>salida_unid
         );  
@@ -99,7 +99,7 @@ architecture Behavioral of just_counter is
     countdec: bin_counter port map(
                 clk => reloj2,
                 reset=>reset,
-                eneable=>salida_unid,
+                enable=>salida_unid,
                 count=>dec               
                 );  
     
