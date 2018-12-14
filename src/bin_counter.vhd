@@ -57,7 +57,7 @@ process(clk, reset, eneable)
         sal<='0';
     elsif clk='1' and clk'event and eneable='1' then
         cuenta <= std_logic_vector(unsigned(cuenta) + 1);
-        if cuenta="1111" then
+        if cuenta="1110" then
             sal<='1';
         else 
             sal<='0';
