@@ -1,11 +1,11 @@
 LIBRARY ieee;
 USE ieee.std_logic_1164.ALL;
  
-ENTITY clkdivider1000_tb IS
-END clkdivider1000_tb;
+ENTITY clk_divider1000_tb IS
+END clk_divider1000_tb;
  
-ARCHITECTURE behavior OF clkdivider1000_tb IS
-    COMPONENT clkdivider1000
+ARCHITECTURE behavior OF clk_divider1000_tb IS
+    COMPONENT clk_divider1000
     PORT(
         Clk : IN  std_logic;
         Reset   : IN  std_logic;
@@ -21,7 +21,7 @@ ARCHITECTURE behavior OF clkdivider1000_tb IS
     constant entrada_t : time := 20 ns; 
 BEGIN
     -- Instancia de la unidad bajo prueba.
-    uut: clkdivider1000 PORT MAP (
+    uut: clk_divider1000 PORT MAP (
         Clk => Clk,
         Reset   => Reset,
         Clk_out1000  => Clk_out1000
