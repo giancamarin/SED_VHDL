@@ -63,10 +63,7 @@ process(clk, reset, enable)
             sal<='0';
         end if;
     end if;    
-    
-
 end process;
 salida<=sal;
 count<=cuenta; 
-
 end Behavioral;

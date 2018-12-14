@@ -75,17 +75,10 @@ begin
                         display_sel<="0111";
                         display_number<=segment_dec;
                     when others=>
-                        display_sel<="1111";
+                        display_sel<="0000";
                         display_number<="1111111";                                          
                end case;
-             
-   
-       
-       
      end if;      
     end process;
-    
-    
     display_selection<=display_sel;
-   
 end Behavioral;

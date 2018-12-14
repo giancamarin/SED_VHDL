@@ -103,6 +103,8 @@ architecture Behavioral of top is
     signal decenas: std_logic_vector(3 downto 0);
     signal seg_unid: std_logic_vector(6 downto 0);
     signal seg_dec: std_logic_vector(6 downto 0);
+    signal display_num_out: std_logic_vector(6 downto 0);
+    signal display_sel_out: std_logic_vector(3 downto 0);
     
     begin
 
@@ -154,9 +156,12 @@ architecture Behavioral of top is
         Clk => Clk_out1000,
         segment_unid => seg_unid,
         segment_dec => seg_dec,
-        display_number => display_number,
-        display_selection => display_selection          
+        display_number => display_num_out,
+        display_selection => display_sel_out          
     );
+    
+    display_number <= display_num_out;
+    display_selection <= display_sel_out;
     
     sr: process(Clk, Reset)
     begin   
@@ -190,8 +195,7 @@ architecture Behavioral of top is
         begin
         case state_register is
             when S0_RESET =>
-                unidades <= "0000";
-                decenas <= "0000";
+                enable <= '0';
             when S1_COUNT =>
                 enable <= '1';
             when S2_STOP =>
