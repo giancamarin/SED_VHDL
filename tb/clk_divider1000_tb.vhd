@@ -21,7 +21,7 @@ ARCHITECTURE behavior OF clkdivider1000_tb IS
     constant entrada_t : time := 20 ns; 
 BEGIN
     -- Instancia de la unidad bajo prueba.
-    uut: clk200Hz PORT MAP (
+    uut: clkdivider1000 PORT MAP (
         Clk => Clk,
         Reset   => Reset,
         Clk_out1000  => Clk_out1000

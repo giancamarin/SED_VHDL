@@ -74,7 +74,9 @@ begin
                     when "11"=>
                         display_sel<="0111";
                         display_number<=segment_dec;
-                                        
+                    when others=>
+                        display_sel<="1111";
+                        display_number<="1111111";                                          
                end case;
              
    

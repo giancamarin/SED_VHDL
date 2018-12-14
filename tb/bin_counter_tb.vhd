@@ -42,32 +42,30 @@ component bin_counter
     port(
         clk: in std_logic;
         reset: in std_logic;
-        eneable: in std_logic;
+        enable: in std_logic;
         count: out std_logic_vector(3 downto 0);
         salida: out std_logic   
     );
 end component;
 
 signal clk: std_logic:='0';
-signal eneable: std_logic:='0';
+signal enable: std_logic:='0';
 signal reset: std_logic;
 signal count: std_logic_vector(3 downto 0);
 signal salida: std_logic;
-
-
 
 begin
 utt: bin_counter
     port map(
     clk=>clk,
-    eneable=>eneable,
+    enable=>enable,
     reset=>reset,
     count=>count,
     salida=>salida
     );
     
     clk <= not clk after 1ms;
-    eneable<='1'after 8ms;
+    enable<='1'after 8ms;
     process
         begin
         wait for 2ms;

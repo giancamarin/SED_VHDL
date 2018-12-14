@@ -1,15 +1,15 @@
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
  
-entity clkdivider1000 is
+entity clk_divider1000 is
     Port (
         Clk: in  STD_LOGIC;
         Reset  : in  STD_LOGIC;
         Clk_out1000 : out STD_LOGIC
     );
-end clkdivider1000;
+end clk_divider1000;
  
-architecture Behavioral of clkdivider1000 is
+architecture Behavioral of clk_divider1000 is
     signal temporal: STD_LOGIC;
     signal contador: integer range 0 to 49999 := 0;
 begin

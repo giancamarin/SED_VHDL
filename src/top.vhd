@@ -32,24 +32,48 @@ entity top is
 end top;
 
 architecture Behavioral of top is
+
+-- Definicion de variables para Maquina de Estados
     type STATE_T is (S0_RESET, S1_COUNT, S2_STOP);
     signal state_register: STATE_T;
     signal next_state: STATE_T;
+    
 --components:
-    component clkdivider1 is
-    Port (
-        Clk: in  STD_LOGIC;
-        Reset  : in  STD_LOGIC;
-        Clk_out1 : out STD_LOGIC
+    component clk_divider1
+        Port (
+            Clk: in  STD_LOGIC;
+            Reset  : in  STD_LOGIC;
+            Clk_out1 : out STD_LOGIC
         );
     end component;
     
-    component clkdivider1000
+    component clk_divider1000
         Port (
             Clk: in  STD_LOGIC;
             Reset  : in  STD_LOGIC;
             Clk_out1000 : out STD_LOGIC
         );
+    end component;
+    
+    component PulsadorAntiRebotes
+        port (
+            clk    : in std_logic;
+            boton_in    : in std_logic;
+            boton_out    : out std_logic
+        );
+    end component;
+    
+    component bin_counter
+        generic( 
+            width: positive := 4
+            );
+        Port ( 
+            clk: in std_logic;
+            reset: in std_logic;
+            enable: in std_logic;
+            count: out std_logic_vector(width-1 downto 0);
+            salida: out std_logic  
+            );
     end component;
     
     component bcd7seg
@@ -67,17 +91,73 @@ architecture Behavioral of top is
             display_number: out std_logic_vector(6 downto 0);
             display_selection: out std_logic_vector(3 downto 0)
          );
-    end component;
+    end component;  
     
+-- Señales de interconexión
+    signal Clk_out1: std_logic;
+    signal Clk_out1000: std_logic;
+    signal boton_out: std_logic;
+    signal enable: std_logic;            
+    signal salida: std_logic;
+    signal unidades: std_logic_vector(3 downto 0);
+    signal decenas: std_logic_vector(3 downto 0);
+    signal seg_unid: std_logic_vector(6 downto 0);
+    signal seg_dec: std_logic_vector(6 downto 0);
     
-    
-begin
+    begin
 
 -- Interconexión de bloques
---    div1:  
+    div1: clk_divider1 port map(
+        Clk => Clk,
+        Reset => Reset,
+        Clk_out1 => Clk_out1
+    );   
     
-    
+    div1000: clk_divider1000 port map(
+        Clk => Clk,
+        Reset => Reset,
+        Clk_out1000 => Clk_out1000
+     );
+     
+     puls: PulsadorAntiRebotes port map(
+        Clk => Clk_out1000,
+        boton_in => StartStop,
+        boton_out => boton_out         
+     );
         
+    count_units: bin_counter port map(
+        clk => Clk_out1,
+        reset => Reset,
+        enable => enable,
+        count => unidades,
+        salida => salida
+    );
+    
+    count_dec: bin_counter port map(
+        clk => Clk_out1,
+        reset => Reset,
+        enable => salida,
+        count => decenas
+    );
+    
+    dec1: bcd7seg port map(
+        code => unidades,
+        led => seg_unid  
+    );
+    
+    dec2: bcd7seg port map(
+        code => decenas,
+        led => seg_dec  
+    );    
+    
+    dr: DisplayRefresh port map(
+        Clk => Clk_out1000,
+        segment_unid => seg_unid,
+        segment_dec => seg_dec,
+        display_number => display_number,
+        display_selection => display_selection          
+    );
+    
     sr: process(Clk, Reset)
     begin   
         if Reset = '1' then
@@ -87,20 +167,20 @@ begin
         end if;
     end process;
     
-    next_state_dec: process(state_register, StartStop)
+    next_state_dec: process(state_register, boton_out)
     begin
         next_state <= state_register;
         case state_register is
             when S0_RESET =>
-                if StartStop = '1' then
+                if boton_out = '1' then
                     next_state <= S1_COUNT;
                 end if;
             when S1_COUNT =>
-                if StartStop = '1' then
+                if boton_out = '1' then
                     next_state <= S2_STOP;
                 end if;
             when S2_STOP =>
-                if StartStop = '1' then
+                if boton_out = '1' then
                     next_state <= S1_COUNT;
                 end if;
         end case;
@@ -108,6 +188,14 @@ begin
           
     output_dec: process(state_register)
         begin
-            
+        case state_register is
+            when S0_RESET =>
+                unidades <= "0000";
+                decenas <= "0000";
+            when S1_COUNT =>
+                enable <= '1';
+            when S2_STOP =>
+                enable <= '0';
+        end case;    
     end process;
 end Behavioral;
