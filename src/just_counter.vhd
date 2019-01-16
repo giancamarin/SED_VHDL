@@ -4,7 +4,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity just_counter is
     Port ( 
         clk: in std_logic;
-        start: in std_logic;
+        enable: in std_logic;
         reset: in std_logic;
         display_number: out std_logic_vector(6 downto 0);
         display_selection: out std_logic_vector(3 downto 0)
@@ -15,7 +15,7 @@ architecture Behavioral of just_counter is
   
   
 --components:
-    component clk_divider1 
+    component clkdivider1 
     Port (
         Clk: in  STD_LOGIC;
         Reset  : in  STD_LOGIC;
@@ -23,7 +23,7 @@ architecture Behavioral of just_counter is
         );
     end component;
     
-    component clk_divider1000 
+    component clkdivider1000 
         Port (
             Clk: in  STD_LOGIC;
             Reset  : in  STD_LOGIC;
@@ -54,15 +54,13 @@ architecture Behavioral of just_counter is
         Port ( 
                clk: in std_logic;
                reset: in std_logic;
-               enable: in std_logic;
+               eneable: in std_logic;
                count: out std_logic_vector(width-1 downto 0);
                salida: out std_logic  
         );
     end component;
     
-    --signal clk_master: std_logic:='0';
-    --signal enable: std_logic;
-    --signal rst: std_logic:='1';
+    
     signal reloj1: std_logic;
     signal reloj2:std_logic;
     signal unid: std_logic_vector(3 downto 0);
@@ -70,19 +68,20 @@ architecture Behavioral of just_counter is
     signal salida_unid: std_logic;
     signal bcd_unid: std_logic_vector(6 downto 0);
     signal bcd_dec: std_logic_vector(6 downto 0);
-    --signal display_num: std_logic_vector(6 downto 0);
-    --signal display_sel: std_logic_vector(3 downto 0);
+    --Para evitar que cuando el counter se quede parado en unidades F, siga contando las decenas se ha creado
+    --esta señal suma_decenas, que sera un and de la salida de unidades y el enable para contar.
+    signal suma_decenas: std_logic; 
   
     
     begin
     
     
-    clk1: clk_divider1000 port map(
+    clk1: clkdivider1000 port map(
                 Clk => Clk,
                 Reset  => reset,
                 Clk_out1000 => reloj1
             );
-    clk2: clk_divider1 port map(
+    clk2: clkdivider1 port map(
                             Clk => clk,
                             Reset  => reset,
                             Clk_out1 => reloj2
@@ -91,7 +90,7 @@ architecture Behavioral of just_counter is
     countunid: bin_counter port map(
         clk => reloj2,
         reset=>reset,
-        enable=>start,
+        eneable=>enable,
         count=>unid,
         salida=>salida_unid
         );  
@@ -99,7 +98,7 @@ architecture Behavioral of just_counter is
     countdec: bin_counter port map(
                 clk => reloj2,
                 reset=>reset,
-                enable=>salida_unid,
+                eneable=>suma_decenas,
                 count=>dec               
                 );  
     
@@ -122,6 +121,6 @@ architecture Behavioral of just_counter is
                  ); 
  
  
- 
+    suma_decenas<=salida_unid and enable;
     
     end;
