@@ -7,7 +7,7 @@ entity just_counter is
         enable: in std_logic;
         reset: in std_logic;
         display_number: out std_logic_vector(6 downto 0);
-        display_selection: out std_logic_vector(3 downto 0)
+        display_selection: out std_logic_vector(7 downto 0)
         );
 end just_counter;
 
@@ -43,8 +43,10 @@ architecture Behavioral of just_counter is
             clk: in std_logic;
             segment_unid: in std_logic_vector(6 downto 0);
             segment_dec: in std_logic_vector(6 downto 0);
+            segment_cent: in std_logic_vector(6 downto 0);
+            segment_mil: in std_logic_vector(6 downto 0);
             display_number: out std_logic_vector(6 downto 0);
-            display_selection: out std_logic_vector(3 downto 0)
+            display_selection: out std_logic_vector(7 downto 0)
          );
     end component;
     
@@ -65,12 +67,21 @@ architecture Behavioral of just_counter is
     signal reloj2:std_logic;
     signal unid: std_logic_vector(3 downto 0);
     signal dec: std_logic_vector(3 downto 0);
+    signal cent: std_logic_vector(3 downto 0);
+    signal mil: std_logic_vector(3 downto 0);
     signal salida_unid: std_logic;
+    signal salida_dec: std_logic;
+    signal salida_cent: std_logic;
     signal bcd_unid: std_logic_vector(6 downto 0);
     signal bcd_dec: std_logic_vector(6 downto 0);
+    signal bcd_cent: std_logic_vector(6 downto 0);
+    signal bcd_mil: std_logic_vector(6 downto 0);
+    
     --Para evitar que cuando el counter se quede parado en unidades F, siga contando las decenas se ha creado
     --esta señal suma_decenas, que sera un and de la salida de unidades y el enable para contar.
-    signal suma_decenas: std_logic; 
+    signal suma_decenas: std_logic;
+    signal suma_centenas: std_logic;
+    signal suma_miles: std_logic; 
   
     
     begin
@@ -99,9 +110,22 @@ architecture Behavioral of just_counter is
                 clk => reloj2,
                 reset=>reset,
                 eneable=>suma_decenas,
-                count=>dec               
+                count=>dec, 
+                salida=>salida_dec             
                 );  
-    
+    countcent: bin_counter port map(
+                        clk => reloj2,
+                        reset=>reset,
+                        eneable=>suma_centenas,
+                        count=>cent,
+                        salida=>salida_cent
+                        );  
+    countmil: bin_counter port map(
+                        clk => reloj2,
+                        reset=>reset,
+                        eneable=>suma_miles,
+                        count=>mil
+                        );                      
     decodificadorunidades: bcd7seg port map(
                 code => unid,
                 led => bcd_unid
@@ -111,16 +135,29 @@ architecture Behavioral of just_counter is
                     code => dec,
                     led => bcd_dec
         );
+        
+    decodificadorcentenas: bcd7seg port map(
+                            code => cent,
+                            led => bcd_cent
+           );
+    decodificadormillares: bcd7seg port map(
+                               code => mil,
+                               led => bcd_mil
+     );       
     
     displayRe: DisplayRefresh Port map (
                     clk => reloj1,
                     segment_unid => bcd_unid,
                     segment_dec => bcd_dec,
+                    segment_cent => bcd_cent,
+                    segment_mil => bcd_mil,
                     display_number => display_number,
                     display_selection => display_selection
                  ); 
  
  
     suma_decenas<=salida_unid and enable;
+    suma_centenas<=salida_dec and enable;
+    suma_miles<=salida_cent and enable;
     
     end;

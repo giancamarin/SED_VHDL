@@ -38,7 +38,7 @@ entity bin_counter is
  Port ( 
     clk: in std_logic;
     reset: in std_logic;
-    enable: in std_logic;
+    eneable: in std_logic;
     count: out std_logic_vector(width-1 downto 0);
     salida: out std_logic  
 );
@@ -50,20 +50,24 @@ signal cuenta: std_logic_vector(count'range);
 signal sal: std_logic;
 
 begin
-process(clk, reset, enable)
+process(clk, reset, eneable)
     begin
     if reset='1' then
         cuenta<=(others=>'0');
         sal<='0';
-    elsif clk='1' and clk'event and enable='1' then
+    elsif clk='1' and clk'event and eneable='1' then
         cuenta <= std_logic_vector(unsigned(cuenta) + 1);
-        if cuenta="1110" then
+    end if;    
+   if cuenta="1111" and eneable='1' then
             sal<='1';
         else 
             sal<='0';
-        end if;
+      
     end if;    
+    
+
 end process;
 salida<=sal;
 count<=cuenta; 
+
 end Behavioral;

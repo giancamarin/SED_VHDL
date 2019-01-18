@@ -37,15 +37,17 @@ entity DisplayRefresh is
     clk: in std_logic;
     segment_unid: in std_logic_vector(6 downto 0);
     segment_dec: in std_logic_vector(6 downto 0);
+    segment_cent: in std_logic_vector(6 downto 0);
+    segment_mil: in std_logic_vector(6 downto 0);
     display_number: out std_logic_vector(6 downto 0);
-    display_selection: out std_logic_vector(3 downto 0)
+    display_selection: out std_logic_vector(7 downto 0)
      );
 end DisplayRefresh;
 
 architecture Behavioral of DisplayRefresh is
 
-    signal estado_refresco: std_logic_vector(1 downto 0):="00";
-    signal display_sel: std_logic_vector(3 downto 0);
+    signal estado_refresco: std_logic_vector(2 downto 0):="000";
+    signal display_sel: std_logic_vector(7 downto 0);
     signal display_num: std_logic_vector(6 downto 0);
 begin
 
@@ -62,23 +64,40 @@ begin
                   end if; 
                   
                      case estado_refresco is
-                    when "00"=>
-                       display_sel<="1110";
-                       display_number<="1111111"; 
-                    when "01"=>
-                        display_sel<="1101";
+                    when "000"=>
+                       display_sel<="11111110";
+                       display_number<=segment_unid; 
+                    when "001"=>
+                        display_sel<="11111101";
+                        display_number<=segment_dec; 
+                    when "010"=>
+                        display_sel<="11111011";
+                        display_number<=segment_cent;
+                    when "011"=>
+                        display_sel<="11110111";
+                        display_number<=segment_mil;
+                    when "100"=>
+                        display_sel<="11101111";
                         display_number<="1111111"; 
-                    when "10"=>
-                        display_sel<="1011";
-                        display_number<=segment_unid;
-                    when "11"=>
-                        display_sel<="0111";
-                        display_number<=segment_dec;
-                    when others=>
-                        display_sel<="0000";
-                        display_number<="1111111";                                          
+                    when "101"=>
+                        display_sel<="11011111";
+                        display_number<="1111111"; 
+                    when "110"=>
+                        display_sel<="10111111";
+                        display_number<="1111111";
+                    when "111"=>
+                        display_sel<="01111111";
+                        display_number<="1111111";
+                                        
                end case;
+             
+   
+       
+       
      end if;      
     end process;
+    
+    
     display_selection<=display_sel;
+   
 end Behavioral;

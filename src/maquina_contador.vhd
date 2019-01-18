@@ -37,7 +37,7 @@ entity maquina_contador is
      reset: in std_logic;
      startstop: in std_logic;
      display_number: out std_logic_vector(6 downto 0);
-     display_selection: out std_logic_vector(3 downto 0)
+     display_selection: out std_logic_vector(7 downto 0)
     );
 end maquina_contador;
 
@@ -63,7 +63,7 @@ architecture structural of maquina_contador is
             enable: in std_logic;
             reset: in std_logic;
             display_number: out std_logic_vector(6 downto 0);
-            display_selection: out std_logic_vector(3 downto 0)
+            display_selection: out std_logic_vector(7 downto 0)
             );
     end component;
     
@@ -71,7 +71,7 @@ architecture structural of maquina_contador is
     signal reloj: std_logic;   
     signal salida_antirrebotes: std_logic;
     signal display_num:  std_logic_vector(6 downto 0);
-    signal display_sel: std_logic_vector(3 downto 0);
+    signal display_sel: std_logic_vector(7 downto 0);
     signal enable: std_logic;
     
  begin    

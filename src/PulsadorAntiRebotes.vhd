@@ -38,8 +38,9 @@ use ieee.std_logic_unsigned.all;
 entity PulsadorAntiRebotes is
     port (
         clk	: in std_logic;
-	    boton_in	: in std_logic;
-    	boton_out	: out std_logic
+	boton_in	: in std_logic;
+	boton_out	: out std_logic;
+	counter : out std_logic_vector(3 downto 0)
 	);
 	
 end PulsadorAntiRebotes;
@@ -64,4 +65,5 @@ begin
 	end if;
 	
     end process;
+    counter<=counter_i;
 end behavioral;
