@@ -1,0 +1,78 @@
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+---------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.2 (win64) Build 2258646 Thu Jun 14 20:03:12 MDT 2018
+| Date         : Fri Jan 18 16:10:49 2019
+| Host         : Gianca-HP running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file maquina_contador_control_sets_placed.rpt
+| Design       : maquina_contador
+| Device       : xc7a100t
+---------------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Number of unique control sets                            |    10 |
+| Unused register locations in slices containing registers |    36 |
++----------------------------------------------------------+-------+
+
+
+2. Histogram
+------------
+
++--------+--------------+
+| Fanout | Control Sets |
++--------+--------------+
+|      2 |            4 |
+|      4 |            1 |
+|      8 |            2 |
+|     10 |            1 |
+|    16+ |            2 |
++--------+--------------+
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |              36 |            8 |
+| No           | No                    | Yes                    |              92 |           14 |
+| No           | Yes                   | No                     |               0 |            0 |
+| Yes          | No                    | No                     |               2 |            1 |
+| Yes          | No                    | Yes                    |              18 |            3 |
+| Yes          | Yes                   | No                     |               8 |            1 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++---------------------------------+--------------------------------+-----------------------------+------------------+----------------+
+|           Clock Signal          |          Enable Signal         |       Set/Reset Signal      | Slice Load Count | Bel Load Count |
++---------------------------------+--------------------------------+-----------------------------+------------------+----------------+
+|  next_state_reg[0]/G0           |                                |                             |                1 |              2 |
+|  next_state_reg[1]/G0           |                                |                             |                1 |              2 |
+|  clk_IBUF_BUFG                  |                                |                             |                1 |              2 |
+|  clk_IBUF_BUFG                  | pulsador/boton_prev_i_1_n_0    |                             |                1 |              2 |
+|  pulsador/state_register_reg[1] |                                | reset_IBUF                  |                1 |              4 |
+|  modulo_contador/clk2/CLK       | modulo_contador/countunid/E[0] | reset_IBUF                  |                1 |              8 |
+|  clk_IBUF_BUFG                  | pulsador/ltOp__0               | pulsador/boton_prev_i_1_n_0 |                1 |              8 |
+|  modulo_contador/clk2/CLK       | state_register[0]              | reset_IBUF                  |                2 |             10 |
+|  modulo_contador/clk1/CLK       |                                |                             |                5 |             30 |
+|  clk_IBUF_BUFG                  |                                | reset_IBUF                  |               13 |             88 |
++---------------------------------+--------------------------------+-----------------------------+------------------+----------------+
+
+
